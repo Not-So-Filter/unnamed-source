@@ -1,0 +1,90 @@
+{
+    "Flex": 2,
+    "name": "Sonic 1",
+    "node": "da472ab9-f363-45e6-8ee3-a83fd70d6d9c",
+    "objects": [
+        {
+            "name": "Common",
+            "children": [
+                {
+                    "name": "Sonic",
+                    "palettes": [
+                        {
+                            "path": "palette/Sonic.bin",
+                            "length": 1
+                        }
+                    ],
+                    "format": "Sonic 2.js",
+                    "art": {
+                        "path": "artunc/Sonic.bin",
+                        "compression": "Uncompressed",
+                        "offset": 0
+                    },
+                    "mappings": {
+                        "path": "_maps/Sonic.asm",
+                        "label": ""
+                    },
+                    "dplcs": {
+                        "enabled": true,
+                        "path": "_maps/Sonic - Dynamic Gfx Script.asm",
+                        "label": ""
+                    },
+                    "uuid": "da472ab9-f363-45e6-8ee3-a83fd70d6d9c"
+                },
+                {
+                    "format": "Sonic 1.js",
+                    "name": "GHZ Menu Art",
+                    "palettes": [
+                        {
+                            "path": "palette\\GHZ LS Icon.bin",
+                            "length": 1
+                        }
+                    ],
+                    "art": {
+                        "path": "artunc\\Pictures in level preview box from level select.unc",
+                        "compression": "Uncompressed",
+                        "offset": 0
+                    },
+                    "mappings": {
+                        "path": "_maps\\mappings.bin",
+                        "label": ""
+                    },
+                    "dplcs": {
+                        "enabled": false,
+                        "path": "",
+                        "label": ""
+                    },
+                    "uuid": "926273b3-d28d-41ce-8a88-2e3e7b6657ec"
+                },
+                {
+                    "format": "Sonic 1.js",
+                    "name": "MZ Menu Art",
+                    "palettes": [
+                        {
+                            "path": "palette\\MZ LS Icon.bin",
+                            "length": 1
+                        }
+                    ],
+                    "art": {
+                        "path": "artunc\\Pictures in level preview box from level select.unc",
+                        "compression": "Uncompressed",
+                        "offset": 0
+                    },
+                    "mappings": {
+                        "path": "_maps\\mappings2.bin",
+                        "label": ""
+                    },
+                    "dplcs": {
+                        "enabled": false,
+                        "path": "",
+                        "label": ""
+                    },
+                    "uuid": "dbaa8832-bf3d-45f2-a0b8-4086f201be58"
+                }
+            ],
+            "isDirectory": true,
+            "expanded": true,
+            "uuid": "14da472a-b9f3-4355-a6ce-e3a83fd70d6d"
+        }
+    ]
+}
