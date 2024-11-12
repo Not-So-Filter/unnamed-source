@@ -83,7 +83,7 @@ v_16x16:		ds.b	16*384		; 16x16 tile mappings
 VDP_Command_Buffer:	ds.w	7*$12		; $FC bytes
 
 VDP_Command_Buffer_Slot:	ds.w	1
-			ds.b	$202		; unused
+			ds.b	2		; unused
 v_tracksonic:		ds.b	$100		; position tracking data for Sonic
 v_hscrolltablebuffer:	ds.b	$380		; scrolling table data
 v_hscrolltablebuffer_end:
@@ -137,7 +137,7 @@ v_objspace_end	= v_lvlobjend
 ; Credits objects
 v_credits	= v_objspace+object_size*2	; object variable space for the credits text ($40 bytes)
 
-			ds.b	$100		; unused
+			ds.b	$300		; unused
 
 v_gamemode:		ds.w	1		; game mode (00=Sega; 04=Title; 08=Demo; 0C=Level; 10=SS; 14=Cont; 18=End; 1C=Credit; +8C=PreLevel)
 			ds.b	2		; unused

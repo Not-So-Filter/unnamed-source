@@ -38,10 +38,10 @@ Sonic_Move:
 		move.b	obActWid(a1),d1
 		move.w	d1,d2
 		add.w	d2,d2
-		subq.w	#4,d2
+		subq.w	#2,d2
 		add.w	obX(a0),d1
 		sub.w	obX(a1),d1
-		cmpi.w	#4,d1
+		cmpi.w	#2,d1
 		blt.s	loc_12F6A
 		cmp.w	d2,d1
 		bge.s	loc_12F5A
