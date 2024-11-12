@@ -78,7 +78,8 @@ Object_respawn_table_end:
 
 v_spritequeue:		SpriteQueue		; sprite display queue, in order of priority
 v_spritequeue_end:
-v_16x16:		ds.b	16*384		; 16x16 tile mappings
+v_16x16:		ds.l	1		; 16x16 tile mappings
+			ds.b	$16FC		; reserved
 
 VDP_Command_Buffer:	ds.w	7*$12		; $FC bytes
 
@@ -137,7 +138,7 @@ v_objspace_end	= v_lvlobjend
 ; Credits objects
 v_credits	= v_objspace+object_size*2	; object variable space for the credits text ($40 bytes)
 
-			ds.b	$300		; unused
+v_snddriver_ram:	ds.b	$400		; unused
 
 v_gamemode:		ds.w	1		; game mode (00=Sega; 04=Title; 08=Demo; 0C=Level; 10=SS; 14=Cont; 18=End; 1C=Credit; +8C=PreLevel)
 			ds.b	2		; unused

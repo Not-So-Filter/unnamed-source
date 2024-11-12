@@ -418,14 +418,22 @@ out_of_range:	macro exit,specpos
 ; ---------------------------------------------------------------------------
 
 playsound:	macro id,type
-		stopZ80
 		if ("type"=="music")
-		move.b	#id,(z80_ram+zAbsVar.Queue0).l
+		tst.w	(Clone_Driver_RAM+SMPS_RAM.variables.queue.v_playsnd1).w
+		bne.s	+
+		clr.b	(Clone_Driver_RAM+SMPS_RAM.variables.queue.v_playsnd1+0).w
+		move.b	#id,(Clone_Driver_RAM+SMPS_RAM.variables.queue.v_playsnd1+1).w
+		bra.s	++
+
++
+		clr.b	(Clone_Driver_RAM+SMPS_RAM.variables.queue.v_playsnd4+0).w
+		move.b	#id,(Clone_Driver_RAM+SMPS_RAM.variables.queue.v_playsnd4+1).w
++
 		endif
 		if ("type"=="sfx")
-		move.b	#id,(z80_ram+zAbsVar.Queue1).l
+		clr.b	(Clone_Driver_RAM+SMPS_RAM.variables.queue.v_playsnd2+0).w
+		move.b	#id,(Clone_Driver_RAM+SMPS_RAM.variables.queue.v_playsnd2+1).w
 		endif
-		startZ80
 		endm
 
 ; ---------------------------------------------------------------------------

@@ -23,9 +23,16 @@ Sonic_Display:
 		bne.s	.removeinvincible
 		cmpi.w	#$C,(v_air).w
 		blo.s	.removeinvincible
-		stopZ80
-		move.b	(v_saved_music).w,(z80_ram+zAbsVar.Queue0).l
-		startZ80
+		tst.w	(Clone_Driver_RAM+SMPS_RAM.variables.queue.v_playsnd1).w
+		bne.s	+
+		clr.b	(Clone_Driver_RAM+SMPS_RAM.variables.queue.v_playsnd1+0).w
+		move.b	(v_saved_music).w,(Clone_Driver_RAM+SMPS_RAM.variables.queue.v_playsnd1+1).w
+		bra.s	++
+
++
+		clr.b	(Clone_Driver_RAM+SMPS_RAM.variables.queue.v_playsnd4+0).w
+		move.b	(v_saved_music).w,(Clone_Driver_RAM+SMPS_RAM.variables.queue.v_playsnd4+1).w
++
 
 .removeinvincible:
 		clr.b	(v_invinc).w ; cancel invincibility

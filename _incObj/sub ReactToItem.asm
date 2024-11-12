@@ -292,9 +292,8 @@ HurtSonic:
 		moveq	#sfx_Death,d0
 
 .sound:
-		stopZ80
-		move.b	d0,(z80_ram+zAbsVar.Queue1).l
-		startZ80
+		clr.b	(Clone_Driver_RAM+SMPS_RAM.variables.queue.v_playsnd2+0).w
+		move.b	d0,(Clone_Driver_RAM+SMPS_RAM.variables.queue.v_playsnd2+1).w
 		moveq	#-1,d0
 		rts
 ; ===========================================================================
@@ -329,9 +328,8 @@ KillSonic:
 		moveq	#sfx_Death,d0	; play normal death sound
 
 .sound:
-		stopZ80
-		move.b	d0,(z80_ram+zAbsVar.Queue1).l
-		startZ80
+		clr.b	(Clone_Driver_RAM+SMPS_RAM.variables.queue.v_playsnd2+0).w
+		move.b	d0,(Clone_Driver_RAM+SMPS_RAM.variables.queue.v_playsnd2+1).w
 
 .dontdie:
 		moveq	#-1,d0

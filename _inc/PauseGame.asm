@@ -15,9 +15,7 @@ PauseGame:
 
 Pause_StopGame:
 		st.b	(f_pause).w	; freeze time
-		stopZ80
-		move.b	#MusID_Pause,(z80_ram+zAbsVar.StopMusic).l ; pause music
-		startZ80
+		SMPS_Pause
 
 Pause_Loop:
 		move.w	#VBla_08,(v_vbla_routine).w
@@ -27,9 +25,7 @@ Pause_Loop:
 		btst	#bitA,(v_jpadpress).w ; is button A pressed?
 		beq.s	Pause_ChkBC	; if not, branch
 		move.w	#GM_Title,(v_gamemode).w ; set game mode to 4 (title screen)
-		stopZ80
-		move.b	#MusID_Unpause,(z80_ram+zAbsVar.StopMusic).l	; unpause the music
-		startZ80
+		SMPS_Unpause
 
 Unpause:
 		clr.b	(f_pause).w	; unpause the game
@@ -49,17 +45,13 @@ Pause_ChkStart:
 		bpl.s	Pause_Loop	; if not, branch
 
 Pause_EndMusic:
-		stopZ80
-		move.b	#MusID_Unpause,(z80_ram+zAbsVar.StopMusic).l	; unpause the music
-		startZ80
+		SMPS_Unpause
 		clr.b	(f_pause).w	; unpause the game
 		rts
 ; ===========================================================================
 
 Pause_SlowMo:
 		st.b	(f_pause).w
-		stopZ80
-		move.b	#MusID_Unpause,(z80_ram+zAbsVar.StopMusic).l	; unpause the music
-		startZ80
+		SMPS_Unpause
 		rts
 ; End of function PauseGame

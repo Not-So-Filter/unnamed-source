@@ -7,26 +7,26 @@
             "name": "Common",
             "children": [
                 {
-                    "name": "Sonic",
+                    "name": "Blaze",
                     "palettes": [
                         {
-                            "path": "palette/Sonic.bin",
+                            "path": "palette/Blaze.bin",
                             "length": 1
                         }
                     ],
                     "format": "Sonic 2.js",
                     "art": {
-                        "path": "artunc/Sonic.bin",
+                        "path": "artunc/Blaze.bin",
                         "compression": "Uncompressed",
                         "offset": 0
                     },
                     "mappings": {
-                        "path": "_maps/Sonic.asm",
+                        "path": "_maps/Blaze.asm",
                         "label": ""
                     },
                     "dplcs": {
                         "enabled": true,
-                        "path": "_maps/Sonic - Dynamic Gfx Script.asm",
+                        "path": "_maps/Blaze - Dynamic Gfx Script.asm",
                         "label": ""
                     },
                     "uuid": "da472ab9-f363-45e6-8ee3-a83fd70d6d9c"

@@ -237,11 +237,17 @@ LevSelControls_CheckLR:
 +
 		move.w	d0,(v_levselsound).w
 		andi.w	#btnB|btnC,d1
-		beq.s	+	; rts
+		beq.s	++	; rts
 		move.w	(v_levselsound).w,d0
-		stopZ80
-		move.b	d0,(z80_ram+zAbsVar.Queue0).l
-		startZ80
+		tst.w	(Clone_Driver_RAM+SMPS_RAM.variables.queue.v_playsnd1).w
+		bne.s	+
+		clr.b	(Clone_Driver_RAM+SMPS_RAM.variables.queue.v_playsnd1+0).w
+		move.b	d0,(Clone_Driver_RAM+SMPS_RAM.variables.queue.v_playsnd1+1).w
+		rts
+
++
+		clr.b	(Clone_Driver_RAM+SMPS_RAM.variables.queue.v_playsnd4+0).w
+		move.b	d0,(Clone_Driver_RAM+SMPS_RAM.variables.queue.v_playsnd4+1).w
 +
 		rts
 ; ===========================================================================
