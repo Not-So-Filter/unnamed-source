@@ -134,7 +134,6 @@ PlayLevel:
 		move.b	#3,(v_lives).w
 		moveq	#0,d0
 		move.w	d0,(v_rings).w
-		move.l	d0,(v_time).w
 		move.l	d0,(v_score).w
 		move.l	#5000,(v_scorelife).w
 		playsound bgm_Fade,music

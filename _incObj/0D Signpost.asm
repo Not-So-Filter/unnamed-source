@@ -100,8 +100,6 @@ Sign_SonicRun:	; Routine 6
 		tst.w	(v_debuguse).w	; is debug mode	on?
 		bne.w	locret_ECEE	; if yes, branch
 	endif
-		tst.b	(v_player+obID).w	; Check if Sonic's object has been deleted (because he entered the giant ring)
-		beq.s	loc_EC86
 		btst	#1,(v_player+obStatus).w
 		bne.w	locret_ECEE
 		move.b	#1,(f_lockctrl).w ; lock controls
@@ -110,7 +108,7 @@ Sign_SonicRun:	; Routine 6
 		move.w	(v_limitright2).w,d1
 		addi.w	#$128,d1
 		cmp.w	d1,d0
-		blo.w	locret_ECEE
+		blo.s	locret_ECEE
 
 loc_EC86:
 		addq.b	#2,obRoutine(a0)
@@ -124,8 +122,8 @@ loc_EC86:
 
 
 GotThroughAct:
-		tst.b	(v_endcard).w
-		bne.w	locret_ECEE
+		tst.l	(v_endcard).w
+		bne.s	locret_ECEE
 		move.w	(v_limitright2).w,(v_limitleft2).w
 		moveq	#0,d0
 		move.b	d0,(v_invinc).w	; disable invincibility
@@ -136,22 +134,7 @@ GotThroughAct:
 		jsr	(NewPLC).w	; load title card patterns
 		move.b	#1,(f_endactbonus).w
 		moveq	#0,d0
-		move.b	(v_timemin).w,d0
-		mulu.w	#60,d0		; convert minutes to seconds
-		moveq	#0,d1
-		move.b	(v_timesec).w,d1
-		add.w	d1,d0		; add up your time
-		divu.w	#15,d0		; divide by 15
-		moveq	#$14,d1
-		cmp.w	d1,d0		; is time 5 minutes or higher?
-		blo.s	.hastimebonus	; if not, branch
-		move.w	d1,d0		; use minimum time bonus (0)
-
-.hastimebonus:
-		add.w	d0,d0
-		move.w	TimeBonuses(pc,d0.w),(v_timebonus).w ; set time bonus
 		move.w	(v_rings).w,d0	; load number of rings
-;		mulu.w	#10,d0		; multiply by 10
 		move.w	d0,d1
 		add.w	d0,d0
 		add.w	d0,d0
@@ -164,8 +147,3 @@ Sign_Exit:	; Routine 8
 locret_ECEE:
 		rts
 ; End of function GotThroughAct
-
-; ===========================================================================
-TimeBonuses:	dc.w 5000, 5000, 1000, 500, 400, 400, 300, 300,	200, 200
-		dc.w 200, 200, 100, 100, 100, 100, 50, 50, 50, 50, 0
-; ===========================================================================

@@ -1385,63 +1385,12 @@ Tit_MainLoop:
 ; ===========================================================================
 
 Tit_ChkRegion:
-		lea	LevSelCode_US(pc),a0 ; load US code
-
-Tit_EnterCheat:
-		move.w	(v_title_dcount).w,d0
-		adda.w	d0,a0
-		move.b	(v_jpadpress).w,d0 ; get button press
-		andi.b	#btnDir,d0	; read only UDLR buttons
-		cmp.b	(a0),d0		; does button press match the cheat code?
-		bne.s	Tit_ResetCheat	; if not, branch
-		addq.w	#1,(v_title_dcount).w ; next button press
-		tst.b	d0
-		bne.s	Tit_CountC
-		lea	(f_levselcheat).w,a0
-		move.w	(v_title_ccount).w,d1
-		lsr.w	#1,d1
-		andi.w	#3,d1
-		beq.s	Tit_PlayRing
-		tst.b	(v_megadrive).w
-		bpl.s	Tit_PlayRing
-		moveq	#1,d1
-		move.b	d1,1(a0,d1.w)	; cheat depends on how many times C is pressed
-
-Tit_PlayRing:
-		move.b	#1,(a0,d1.w)	; activate cheat
-		playsound sfx_Ring,sfx
-		bra.s	Tit_CountC
-; ===========================================================================
-
-Tit_ResetCheat:
-		tst.b	d0
-		beq.s	Tit_CountC
-		cmpi.w	#9,(v_title_dcount).w
-		beq.s	Tit_CountC
-		clr.w	(v_title_dcount).w ; reset UDLR counter
-
-Tit_CountC:
-		moveq	#btnC,d0	; is C button pressed?
-		and.b	(v_jpadpress).w,d0
-		beq.s	loc_3230	; if not, branch
-		addq.w	#1,(v_title_ccount).w ; increment C counter
-
-loc_3230:
 		tst.b	(v_jpadpress).w ; check if Start is pressed
-		bpl.w	Tit_MainLoop	; if not, branch
-
-Tit_ChkLevSel:
-		tst.b	(f_levselcheat).w ; check if level select code is on
-		beq.w	PlayLevel	; if not, play level
-		btst	#bitA,(v_jpadhold).w ; check if A is pressed
+		bpl.s	Tit_MainLoop	; if not, branch
+		btst	#bitA,(v_jpadhold).w ; check if A is held
 		beq.w	PlayLevel	; if not, play level
 		move.w	#GM_MenuScreen,(v_gamemode).w ; go to title screen
 		rts
-; ---------------------------------------------------------------------------
-; Level	select code
-; ---------------------------------------------------------------------------
-LevSelCode_US:	dc.b btnUp,btnDn,btnL,btnR,0,$FF
-		even
 
 		include	"_inc/Menus.asm"
 
@@ -1563,7 +1512,6 @@ Level_LoadObj:
 		tst.b	(v_lastlamp).w	; are you starting from	a lamppost?
 		bne.s	Level_SkipClr	; if yes, branch
 		move.w	d0,(v_rings).w	; clear rings
-		move.l	d0,(v_time).w	; clear time
 		move.b	d0,(v_lifecount).w ; clear lives counter
 
 Level_SkipClr:
@@ -3688,18 +3636,10 @@ loc_12C7E:
 		bsr.s	Sonic_Display
 		bsr.w	Sonic_RecordPosition
 		move.w	(v_anglebuffer).w,objoff_36(a0)
-		tst.b	obAnim(a0)
-		bne.s	loc_12CA6
-		move.b	obPrevAni(a0),obAnim(a0)
-
-loc_12CA6:
 		bsr.w	Sonic_Animate
 		tst.b	(f_playerctrl).w
-		bmi.s	loc_12CB6
+		bmi.w	Sonic_LoadGfx
 		jsr	(ReactToItem).l
-
-loc_12CB6:
-		bsr.w	Sonic_Loops
 		bra.w	Sonic_LoadGfx
 ; ===========================================================================
 Sonic_Modes:	dc.w Sonic_MdNormal-Sonic_Modes
@@ -3758,11 +3698,10 @@ Sonic_MdRoll:
 		include	"_incObj/Sonic Floor.asm"
 		include	"_incObj/Sonic ResetOnFloor.asm"
 		include	"_incObj/Sonic (part 2).asm"
-		include	"_incObj/Sonic Loops.asm"
 		include	"_incObj/Sonic Animate.asm"
 		include	"_anim/Sonic.asm"
 		include	"_incObj/Sonic LoadGfx.asm"
-SonicDynPLC:	include	"_maps/Blaze - Dynamic Gfx Script.asm"
+SonicDynPLC:	include	"_maps/Sonic - Dynamic Gfx Script.asm"
 
 		include	"_incObj/38 Shield and Invincibility.asm"
 		include	"_incObj/03 Collision Switcher.asm"
@@ -4283,13 +4222,13 @@ KosPM_MenuBox:	binclude	"artkospm/A menu box with a shadow.kospm"
 KosPM_LevelSelectPics:	binclude	"artkospm/Pictures in level preview box from level select.kospm"
 		even
 
-Map_Sonic:	include	"_maps/Blaze.asm"
+Map_Sonic:	include	"_maps/Sonic.asm"
 ; ---------------------------------------------------------------------------
 ; Uncompressed graphics	- Blaze
 ; ---------------------------------------------------------------------------
 
 	align $8000
-Art_Sonic:	binclude	"artunc/Blaze.bin"
+Art_Sonic:	binclude	"artunc/Sonic.bin"
 		even
 ; ---------------------------------------------------------------------------
 ; Compressed graphics - various

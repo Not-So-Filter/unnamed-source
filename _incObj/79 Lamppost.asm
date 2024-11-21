@@ -142,7 +142,6 @@ Lamp_StoreInfo:
 		move.w	obY(a0),(v_lamp_ypos).w			; y-position
 		move.w	(v_rings).w,(v_lamp_rings).w 		; rings
 		move.b	(v_lifecount).w,(v_lamp_lives).w 	; lives
-		move.l	(v_time).w,(v_lamp_time).w 		; time
 		move.b	(v_dle_routine).w,(v_lamp_dle).w	; routine counter for dynamic level mod
 		move.w	(v_limitbtm2).w,(v_lamp_limitbtm).w 	; lower y-boundary of level
 		move.w	(v_screenposx).w,(v_lamp_scrx).w 	; screen x-position
@@ -170,9 +169,6 @@ Lamp_LoadInfo:
 		move.b	(v_lamp_lives).w,(v_lifecount).w
 		clr.w	(v_rings).w
 		clr.b	(v_lifecount).w
-		move.l	(v_lamp_time).w,(v_time).w
-		move.b	#59,(v_timecent).w
-		subq.b	#1,(v_timesec).w
 		move.b	(v_lamp_dle).w,(v_dle_routine).w
 		move.w	(v_lamp_limitbtm).w,(v_limitbtm2).w
 		move.w	(v_lamp_limitbtm).w,(v_limitbtm1).w

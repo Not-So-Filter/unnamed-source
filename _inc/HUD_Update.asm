@@ -6,59 +6,27 @@
 
 HUD_Update:
 		tst.b	(f_debugmode).w	; is debug mode	on?
-		bne.w	HudDebug	; if yes, branch
+		bne.s	HudDebug	; if yes, branch
 		tst.b	(f_scorecount).w ; does the score need updating?
 		beq.s	.chkrings	; if not, branch
 
 		clr.b	(f_scorecount).w
-		locVRAM	(ArtTile_HUD+$1A)*tile_size,d0	; set VRAM address
+		locVRAM	(ArtTile_HUD+$12)*tile_size,d0	; set VRAM address
 		move.l	(v_score).w,d1	; load score
 		bsr.w	Hud_Score
 
 .chkrings:
 		tst.b	(f_ringcount).w	; does the ring	counter	need updating?
-		beq.s	.chktime	; if not, branch
+		beq.s	.chklives	; if not, branch
 		bpl.s	.notzero
 		bsr.w	Hud_LoadZero	; reset rings to 0 if Sonic is hit
 
 .notzero:
 		clr.b	(f_ringcount).w
-		locVRAM	(ArtTile_HUD+$30)*tile_size,d0	; set VRAM address
+		locVRAM	(ArtTile_HUD+$20)*tile_size,d0	; set VRAM address
 		moveq	#0,d1
 		move.w	(v_rings).w,d1	; load number of rings
 		bsr.w	Hud_Rings
-
-.chktime:
-		tst.b	(f_timecount).w	; does the time	need updating?
-		beq.s	.chklives	; if not, branch
-		tst.b	(f_pause).w	; is the game paused?
-		bne.s	.chklives	; if yes, branch
-		lea	(v_time).w,a1
-		cmpi.l	#(9*$10000)+(59*$100)+59,(a1)+ ; is the time 9:59:59?
-		beq.s	TimeOver	; if yes, branch
-
-		addq.b	#1,-(a1)	; increment 1/60s counter
-		cmpi.b	#60,(a1)	; check if passed 60
-		blo.s	.chklives
-		clr.b	(a1)
-		addq.b	#1,-(a1)	; increment second counter
-		cmpi.b	#60,(a1)	; check if passed 60
-		blo.s	.updatetime
-		clr.b	(a1)
-		addq.b	#1,-(a1)	; increment minute counter
-		cmpi.b	#9,(a1)		; check if passed 9
-		blo.s	.updatetime
-		move.b	#9,(a1)		; keep as 9
-
-.updatetime:
-		locVRAM	(ArtTile_HUD+$28)*tile_size,d0
-		moveq	#0,d1
-		move.b	(v_timemin).w,d1 ; load	minutes
-		bsr.w	Hud_Mins
-		locVRAM	(ArtTile_HUD+$2C)*tile_size,d0
-		moveq	#0,d1
-		move.b	(v_timesec).w,d1 ; load	seconds
-		bsr.w	Hud_Secs
 
 .chklives:
 		tst.b	(f_lifecount).w ; does the lives counter need updating?
@@ -72,22 +40,10 @@ HUD_Update:
 		clr.b	(f_endactbonus).w
 		locVRAM	ArtTile_Bonuses*tile_size
 		moveq	#0,d1
-		move.w	(v_timebonus).w,d1 ; load time bonus
-		bsr.w	Hud_TimeRingBonus
-		moveq	#0,d1
 		move.w	(v_ringbonus).w,d1 ; load ring bonus
 		bra.w	Hud_TimeRingBonus
 
 .finish:
-		rts
-; ===========================================================================
-
-TimeOver:
-		clr.b	(f_timecount).w
-		lea	(v_player).w,a0
-		movea.l	a0,a2
-		bsr.w	KillSonic
-		move.b	#1,(f_timeover).w
 		rts
 ; ===========================================================================
 
@@ -100,16 +56,16 @@ HudDebug:
 
 .notzero:
 		clr.b	(f_ringcount).w
-		locVRAM	(ArtTile_HUD+$30)*tile_size,d0	; set VRAM address
+		locVRAM	(ArtTile_HUD+$20)*tile_size,d0	; set VRAM address
 		moveq	#0,d1
 		move.w	(v_rings).w,d1	; load number of rings
 		bsr.w	Hud_Rings
 
 .objcounter:
-		locVRAM	(ArtTile_HUD+$2C)*tile_size,d0	; set VRAM address
-		moveq	#0,d1
-		move.b	(v_spritecount).w,d1 ; load "number of objects" counter
-		bsr.w	Hud_Secs
+;		locVRAM	(ArtTile_HUD+$2C)*tile_size,d0	; set VRAM address
+;		moveq	#0,d1
+;		move.b	(v_spritecount).w,d1 ; load "number of objects" counter
+;		bsr.w	Hud_Secs
 		tst.b	(f_lifecount).w ; does the lives counter need updating?
 		beq.s	.chkbonus	; if not, branch
 		clr.b	(f_lifecount).w
@@ -120,9 +76,6 @@ HudDebug:
 		beq.s	.finish		; if not, branch
 		clr.b	(f_endactbonus).w
 		locVRAM	ArtTile_Bonuses*tile_size		; set VRAM address
-		moveq	#0,d1
-		move.w	(v_timebonus).w,d1 ; load time bonus
-		bsr.w	Hud_TimeRingBonus
 		moveq	#0,d1
 		move.w	(v_ringbonus).w,d1 ; load ring bonus
 		bra.w	Hud_TimeRingBonus
@@ -139,9 +92,9 @@ HudDebug:
 
 
 Hud_LoadZero:
-		locVRAM	(ArtTile_HUD+$30)*tile_size
+		locVRAM	(ArtTile_HUD+$20)*tile_size
 		lea	Hud_TilesZero(pc),a2
-		moveq	#2,d2
+		moveq	#(Hud_TilesZero_End-Hud_TilesZero)-1,d2
 		bra.s	loc_1C83E
 ; End of function Hud_LoadZero
 
@@ -155,9 +108,9 @@ Hud_LoadZero:
 Hud_Base:
 		lea	(vdp_data_port).l,a6
 		bsr.w	Hud_Lives
-		locVRAM	(ArtTile_HUD+$18)*tile_size
+		locVRAM	(ArtTile_HUD+$10)*tile_size
 		lea	Hud_TilesBase(pc),a2
-		moveq	#$E,d2
+		moveq	#(Hud_TilesBase_End-Hud_TilesBase)-1,d2
 
 loc_1C83E:
 		lea	Art_Hud(pc),a1
@@ -187,8 +140,29 @@ loc_1C85E:
 ; End of function Hud_Base
 
 ; ===========================================================================
-Hud_TilesBase:	dc.b $16, $FF, $FF, $FF, $FF, $FF, $FF,	0, 0, $14, 0, 0
-Hud_TilesZero:	dc.b $FF, $FF, 0, 0
+
+	charset	' ',$FF
+	charset	'0',0
+	charset	'1',2
+	charset	'2',4
+	charset	'3',6
+	charset	'4',8
+	charset	'5',$A
+	charset	'6',$C
+	charset	'7',$E
+	charset	'8',$10
+	charset	'9',$12
+	charset	':',$14
+	charset	'E',$16
+
+Hud_TilesBase:	dc.b "E      0"
+Hud_TilesZero:	dc.b "  0"
+Hud_TilesBase_End:
+Hud_TilesZero_End:
+
+	charset
+	even
+
 ; ---------------------------------------------------------------------------
 ; Subroutine to	load debug mode	numbers	patterns
 ; ---------------------------------------------------------------------------

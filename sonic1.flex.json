@@ -80,6 +80,35 @@
                         "label": ""
                     },
                     "uuid": "dbaa8832-bf3d-45f2-a0b8-4086f201be58"
+                },
+                {
+                    "format": "Sonic 2.js",
+                    "name": "HUD",
+                    "palettes": [
+                        {
+                            "path": "palette\\Blaze.bin",
+                            "length": 1
+                        },
+                        {
+                            "path": "palette\\Green Hill Zone.bin",
+                            "length": 3
+                        }
+                    ],
+                    "art": {
+                        "path": "",
+                        "compression": "Uncompressed",
+                        "offset": 0
+                    },
+                    "mappings": {
+                        "path": "_maps\\HUD.asm",
+                        "label": ""
+                    },
+                    "dplcs": {
+                        "enabled": false,
+                        "path": "",
+                        "label": ""
+                    },
+                    "uuid": "51268b98-9687-4598-b160-4563c3b38f5c"
                 }
             ],
             "isDirectory": true,

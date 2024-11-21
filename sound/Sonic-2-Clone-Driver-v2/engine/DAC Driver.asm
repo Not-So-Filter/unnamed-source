@@ -175,7 +175,6 @@ zEntryPoint:
 
 	; Disable interrupts because we don't need them, and set the interrupt mode to a sane value
 	di
-	di	; Pretty much every Z80 driver does this twice or more and I don't know why
 	im	1	; Setting this to anything else is bad (breaks certain early models of Mega Drive)
 
 	ld	sp,zStack
@@ -471,7 +470,7 @@ zDoCommand:
 	ld	(de),a
 
 	; Self-modify the bankswitch code to suit this new bank value
-	jr	zChangeBankswitch
+	jp	zChangeBankswitch
 
 .stop_channel:
 	; Back-up the channel state to the request struct, allowing it to be resubmitted
@@ -511,7 +510,7 @@ zSample1Ended:
 	; Set the sample incrementers to 0
 	ld	(zSample1AdvanceRemainder),a
 	ld	(zSample1AdvanceQuotient),a
-	jr	zSample2Ended.go
+	jp	zSample2Ended.go
 
 zSample2Ended:
 	; Set the sample incrementers to 0
@@ -531,7 +530,7 @@ zSample1NextBank:
 	push	hl
 	ld	hl,zSample1Bank
 	ld	ix,zSample1SelfModifiedCode
-	jr	zSample2NextBank.go
+	jp	zSample2NextBank.go
 
 zSample2NextBank:
 	ex	af,af'
